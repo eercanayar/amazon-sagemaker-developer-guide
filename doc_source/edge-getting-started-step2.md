@@ -52,7 +52,7 @@ In this section you will create SageMaker and AWS IoT client objects, download a
    model_name = model_filename.split('.')[0] 
    
    # Compress model into .tar.gz so SageMaker Neo can use it 
-   model_filename = model_name + '.tar.gz' 
+   model_tar = model_name + '.tar.gz' 
    !tar -czf {model_tar} {model_filename}
    ```
 
@@ -61,7 +61,7 @@ In this section you will create SageMaker and AWS IoT client objects, download a
    Once you have a machine learning model, store it in an Amazon S3 bucket\. The following example uses an AWS CLI command to upload the model the to the Amazon S3 bucket you created earlier in a directory called *models*\. Type in the following into your Jupyter Notebook:
 
    ```
-   !aws cp detect.tar.gz s3://{bucket}/models/
+   !aws s3 cp detect.tar.gz s3://{bucket}/models/
    ```
 
 1. **Compile your model with SageMaker Neo\.**
