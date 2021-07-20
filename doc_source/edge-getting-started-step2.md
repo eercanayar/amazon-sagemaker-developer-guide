@@ -83,7 +83,7 @@ In this section you will create SageMaker and AWS IoT client objects, download a
    ```
    # Specify the path where your model is stored
    model_directory = 'models'
-   s3_model_uri = 's3://{}/{}/{}'.format(bucket, model_directory,model_filename)
+   s3_model_uri = 's3://{}/{}/{}'.format(bucket, model_directory, model_tar)
    
    # Store compiled model in S3 within the 'compiled-models' directory
    compilation_output_dir = 'compiled-models'
