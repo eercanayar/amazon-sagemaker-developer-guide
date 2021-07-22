@@ -54,7 +54,7 @@ In this section you will set up your device with the agent\. To do so, first cop
 
    ```
    sagemaker_edge_config = {
-       "sagemaker_edge_core_device_name": device_name,
+       "sagemaker_edge_core_device_uuid": device_name,
        "sagemaker_edge_core_device_fleet_name": device_fleet_name,
        "sagemaker_edge_core_capture_data_buffer_size": 30,
        "sagemaker_edge_core_capture_data_push_period_seconds": 4,
