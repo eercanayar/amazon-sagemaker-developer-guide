@@ -11,16 +11,17 @@ In this section you will set up your device with the agent\. To do so, first cop
    The agent is released in binary format for supported operating systems\. This example runs inference on a Linux platform \(Rasperry Pi OS is based on Debian\)\. Fetch the latest version of binaries from the SageMaker Edge Manager release bucket from the us\-west\-2 Region\.
 
    ```
-   aws s3 ls s3://sagemaker-edge-release-store-us-west-2-windows-x86/Releases/ | sort -r
+   !aws s3 ls s3://sagemaker-edge-release-store-us-west-2-linux-armv8/Releases/ | sort -r
    ```
 
    This returns release artifacts sorted by their version\.
 
    ```
-   2020-12-01 23:33:36 0 
-   
-                       PRE 1.20201218.81f481f/
-                       PRE 1.20201207.02d0e97/
+   PRE 1.20210512.96da6cc/
+   PRE 1.20210305.a4bc999/
+   PRE 1.20201218.81f481f/
+   PRE 1.20201207.02d0e97/
+   2020-12-02 07:29:42          0 
    ```
 
    The version has the following format: `<MAJOR_VERSION>.<YYYY-MM-DD>-<SHA-7>`\. It consists of three components:
@@ -31,7 +32,7 @@ In this section you will set up your device with the agent\. To do so, first cop
    Copy the zipped TAR file locally or to your device directly\. The following example shows how to copy the latest release artifact at the time this document was released\.
 
    ```
-   !aws s3 cp s3://sagemaker-edge-release-store-us-west-2-linux-x64/Releases/1.20201218.81f481f/1.20201218.81f481f.tgz ./
+   !aws s3 cp s3://sagemaker-edge-release-store-us-west-2-linux-armv8/Releases/1.20201218.81f481f/1.20201218.81f481f.tgz ./
    ```
 
    Once you have the artifact, unzip the zipped TAR file:
@@ -44,7 +45,7 @@ In this section you will set up your device with the agent\. To do so, first cop
    You also need the signing root certificates from the release bucket:
 
    ```
-   !aws s3 cp s3://sagemaker-edge-release-store-us-west-2-linux-x64/Certificates/us-west-2/us-west-2.pem ./
+   !aws s3 cp s3://sagemaker-edge-release-store-us-west-2-linux-armv8/Certificates/us-west-2/us-west-2.pem ./
    ```
 
 1. **Define a SageMaker Edge Manager agent configuration file\.**
@@ -53,8 +54,8 @@ In this section you will set up your device with the agent\. To do so, first cop
 
    ```
    sagemaker_edge_config = {
-       "sagemaker_edge_core_device_name": "device_name",
-       "sagemaker_edge_core_device_fleet_name": "device_fleet_name",
+       "sagemaker_edge_core_device_name": device_name,
+       "sagemaker_edge_core_device_fleet_name": device_fleet_name,
        "sagemaker_edge_core_capture_data_buffer_size": 30,
        "sagemaker_edge_core_capture_data_push_period_seconds": 4,
        "sagemaker_edge_core_folder_prefix": "demo_capture",
@@ -63,7 +64,7 @@ In this section you will set up your device with the agent\. To do so, first cop
        "sagemaker_edge_provider_aws_ca_cert_file": "/agent_demo/iot-credentials/AmazonRootCA1.pem",
        "sagemaker_edge_provider_aws_cert_file": "/agent_demo/iot-credentials/device.pem.crt",
        "sagemaker_edge_provider_aws_cert_pk_file": "/agent_demo/iot-credentials/private.pem.key",
-       "sagemaker_edge_provider_aws_iot_cred_endpoint": "endpoint",
+       "sagemaker_edge_provider_aws_iot_cred_endpoint": endpoint,
        "sagemaker_edge_provider_provider": "Aws",
        "sagemaker_edge_provider_s3_bucket_name": bucket,
        "sagemaker_edge_core_capture_data_destination": "Cloud"
@@ -100,7 +101,7 @@ You must first install Python, the AWS SDK for Python \(Boto3\), and the AWS CLI
 
    ```
    # Copy release artifacts 
-   aws s3 cp s3://sagemaker-edge-manager-demo/release_artifacts/ ./ --recursive
+   aws s3 cp s3://<bucket-name>/release_artifacts/ ./ --recursive
    ```
 
    Go the `/bin` directory and make the binary files executable:
@@ -111,7 +112,7 @@ You must first install Python, the AWS SDK for Python \(Boto3\), and the AWS CLI
    chmod +x sagemaker_edge_agent_binary
    chmod +x sagemaker_edge_agent_client_example
    
-   cd agent_demo
+   cd ../
    ```
 
    Make a directory to store your AWS IoT credentials and copy your credentials from your Amazon S3 bucket to your edge device \(use the same on you define in the variable `bucket`:
